@@ -1,0 +1,34 @@
+1.Find the top five kinds of GoogleKnowlege_Occupation people who were guests in the
+show, in a particular time period.
+Take the time period as 1/11/99 to 6/11/99 i.e., 6 months
+
+
+demo1 = load '/home/kiran/dialy_shows' using PigStorage(',') as (year:chararray,occupation:chararray,date:chararray,group:chararray,gusetlist:chararray);
+ 
+demo2 = foreach demo1 generate occupation,date;
+ 
+demo3 = foreach demo2 generate occupation,ToDate(date,'MM/dd/yy') as date;
+ 
+demo4 = filter demo3 by ((date> ToDate('1/11/99','MM/dd/yy')) AND (date<ToDate('6/11/99','MM/dd/yy')));
+ 
+ 
+demo5 = group demo4 by occupation;
+demo6 = foreach demo5 generate group, COUNT(D) as cnt;
+ 
+demo7 = order demo6 by cnt desc;
+ 
+demo8 = limit demo7 5;
+
+
+2.Find the number of Google Knowledge occupation types in each group, who have been
+guests on the show.
+
+demo1 = load 'user/acadgild/pig_data.txt' using PigStorage(',') as (year:chararray,occupation:chararray,date:chararray,group:chararray,gusetlist:chararray);
+
+demo2 = foreach demo1 generate occupation,group;
+
+demo3 = group demo2 by group;
+
+demo4 = foreach demo3 generate group, COUNT(demo2) as cnt;
+
+demo5 = order demo4 by cnt desc;
