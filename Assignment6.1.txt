@@ -19,6 +19,7 @@ demo6 = foreach demo5 generate group, COUNT(demo4) as cnt;
 demo7 = order demo6 by cnt desc;
  
 demo8 = limit demo7 5;
+dump demo8;
 
 
 2.Find the number of Google Knowledge occupation types in each group, who have been
